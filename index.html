@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TopUpHub - Game Top Up</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #080b12;
+    color: white;
+}
+
+header {
+    background: #101622;
+    padding: 16px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #222a38;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #00d9ff;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 11px 16px;
+    font-weight: bold;
+}
+
+.admin-btn {
+    background: #00d9ff;
+    color: #001018;
+}
+
+.hero {
+    padding: 60px 5%;
+    text-align: center;
+    background: linear-gradient(135deg, #07121c, #111827);
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #aeb8c7;
+    font-size: 17px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    font-size: 25px;
+}
+
+.games {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.game-card {
+    background: #111722;
+    border: 1px solid #263143;
+    border-radius: 16px;
+    padding: 25px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.game-card:hover {
+    transform: translateY(-4px);
+    border-color: #00d9ff;
+}
+
+.game-card.active {
+    border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0,217,255,.15);
+}
+
+.game-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.packages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.package {
+    background: #111722;
+    border: 1px solid #263143;
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.package-image {
+    height: 130px;
+    border-radius: 12px;
+    background: #0b1019;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #788497;
+    margin-bottom: 15px;
+}
+
+.package h3 {
+    margin-bottom: 8px;
+}
+
+.price {
+    color: #00d9ff;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 14px;
+}
+
+.buy-btn {
+    width: 100%;
+    background: #00d9ff;
+    color: #001018;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.78);
+    z-index: 500;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.modal-box {
+    max-width: 600px;
+    margin: 30px auto;
+    background: #101722;
+    border: 1px solid #293548;
+    border-radius: 18px;
+    padding: 25px;
+}
+
+.close {
+    float: right;
+    background: #252d3a;
+    color: white;
+}
+
+.steps {
+    display: flex;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.step {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    background: #1b2432;
+    color: #8995a7;
+}
+
+.step.active {
+    background: #00d9ff;
+    color: #001018;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    color: #cbd5e1;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    border-radius: 9px;
+    border: 1px solid #303b4d;
+    background: #080d15;
+    color: white;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #00d9ff;
+}
+
+.next-btn,
+.submit-btn {
+    width: 100%;
+    background: #00d9ff;
+    color: #001018;
+    margin-top: 10px;
+}
+
+.account {
+    border: 1px solid #303b4d;
+    background: #0a1019;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.account-label {
+    color: #8995a7;
+    font-size: 13px;
+}
+
+.account-bank {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00d9ff;
+}
+
+.account-number {
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 10px 0;
+}
+
+.account-owner {
+    color: #aab5c4;
+}
+
+.payment-note {
+    color: #8995a7;
+    font-size: 13px;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+.upload-box {
+    border: 2px dashed #344154;
+    border-radius: 14px;
+    padding: 25px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.preview {
+    max-width: 100%;
+    max-height: 250px;
+    border-radius: 10px;
+    margin-top: 15px;
+    display: none;
+}
+
+.success {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.success h2 {
+    color: #00d9ff;
+    margin-bottom: 15px;
+}
+
+.order-number {
+    background: #0a1019;
+    padding: 14px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.admin-section {
+    display: none;
+}
+
+.admin-card {
+    background: #111722;
+    border: 1px solid #263143;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 15px;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #302a10;
+    color: #ffd34d;
+    font-size: 12px;
+    margin: 8px 0;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.admin-actions button {
+    background: #263143;
+    color: white;
+}
+
+.package-admin {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #0b1018;
+    border: 1px solid #273244;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 8px 0;
+}
+
+.package-admin span:first-child {
+    flex: 1;
+}
+
+.package-admin button {
+    background: #d83a4b;
+    color: white;
+}
+
+.add-package {
+    background: #00d9ff !important;
+    color: #001018 !important;
+    margin-bottom: 15px;
+}
+
+footer {
+    text-align: center;
+    padding: 35px;
+    color: #707b8d;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media(max-width: 800px) {
+    .games {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .packages {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+}
+
+@media(max-width: 500px) {
+    .packages {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 45px 5%;
+    }
+
+    .package-admin {
+        flex-wrap: wrap;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">TopUp<span>Hub</span></div>
+    <button class="admin-btn" onclick="openAdminLogin()">Admin</button>
+</header>
+
+<section class="hero">
+    <h1>Fast & Easy Game Top Up</h1>
+    <p>Buy game credits quickly and securely.</p>
+</section>
+
+<main id="customerPage">
+
+<div class="container">
+
+    <h2 class="section-title">Choose Your Game</h2>
+
+    <div class="games" id="gamesList"></div>
+
+    <br>
+
+    <h2 class="section-title">Available Packages</h2>
+
+    <div class="packages" id="packagesList"></div>
+
+</div>
+
+</main>
+
+
+<!-- CHECKOUT -->
+
+<div class="modal" id="checkoutModal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeCheckout()">Close</button>
+
+<h2>Complete Your Order</h2>
+
+<div class="steps" id="stepBar">
+    <div class="step active" id="stepOneLabel">1. Player</div>
+    <div class="step" id="stepTwoLabel">2. Payment</div>
+    <div class="step" id="stepThreeLabel">3. Screenshot</div>
+</div>
+
+
+<!-- STEP 1 -->
+
+<div id="checkoutStep1">
+
+<div class="form-group">
+<label>Player ID / UID</label>
+<input type="text" id="playerId" placeholder="Enter your Player ID">
+</div>
+
+<div class="form-group">
+<label>In-game Username</label>
+<input type="text" id="playerUsername" placeholder="Enter your username">
+</div>
+
+<div class="form-group">
+<label>Your Name</label>
+<input type="text" id="customerName" placeholder="Enter your name">
+</div>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="tel" id="customerPhone" placeholder="Enter your phone number">
+</div>
+
+<button class="next-btn" onclick="goToPayment()">Next</button>
+
+</div>
+
+
+<!-- STEP 2 -->
+
+<div id="checkoutStep2" class="hidden">
+
+<h3 id="paymentTitle"></h3>
+
+<br>
+
+<div id="accountsList"></div>
+
+<button class="next-btn" onclick="goToScreenshot()">
+I Have Made The Transfer
+</button>
+
+</div>
+
+
+<!-- STEP 3 -->
+
+<div id="checkoutStep3" class="hidden">
+
+<h3>Upload Payment Screenshot</h3>
+
+<p style="color:#9aa6b7;margin-top:8px;">
+Upload a clear screenshot showing your payment.
+</p>
+
+<div class="upload-box">
+
+<input
+type="file"
+id="paymentScreenshot"
+accept="image/*"
+onchange="previewScreenshot(event)"
+>
+
+<img id="screenshotPreview" class="preview">
+
+</div>
+
+<button class="submit-btn" onclick="submitOrder()">
+Submit Order
+</button>
+
+</div>
+
+
+<!-- SUCCESS -->
+
+<div id="checkoutSuccess" class="success hidden">
+
+<h2>Your order is being confirmed</h2>
+
+<p style="color:#aeb8c7;">
+Please keep your order number for reference.
+</p>
+
+<div class="order-number">
+Order Number:
+<strong id="finalOrderNumber"></strong>
+</div>
+
+<br>
+
+<button class="next-btn" onclick="closeCheckout()">
+Done
+</button>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ADMIN LOGIN -->
+
+<div class="modal" id="adminLoginModal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeAdminLogin()">Close</button>
+
+<h2>Admin Login</h2>
+
+<br>
+
+<div class="form-group">
+<label>Admin Password</label>
+<input type="password" id="adminPassword" placeholder="Enter password">
+</div>
+
+<button class="next-btn" onclick="loginAdmin()">Login</button>
+
+</div>
+</div>
+
+
+<!-- ADMIN -->
+
+<section class="admin-section" id="adminPage">
+
+<div class="container">
+
+<button class="close" onclick="logoutAdmin()" style="float:none;margin-bottom:20px;">
+Logout
+</button>
+
+<h2 class="section-title">Admin Dashboard</h2>
+
+<h3 style="margin-bottom:15px;">Orders</h3>
+
+<div id="ordersList"></div>
+
+<hr style="border-color:#273244;margin:35px 0;">
+
+<h3>Manage Packages</h3>
+
+<div id="managePackages"></div>
+
+</div>
+
+</section>
+
+
+<footer>
+© 2026 TopUpHub. All rights reserved.
+</footer>
+
+
+<script>
+
+var defaultData = {
+
+    "Free Fire": [
+        {name:"500 Diamonds", price:3000},
+        {name:"1,000 Diamonds", price:5000},
+        {name:"2,000 Diamonds", price:7500},
+        {name:"3,000 Diamonds", price:10500},
+        {name:"5,000 Diamonds", price:16000},
+        {name:"10,000 Diamonds", price:30000}
+    ],
+
+    "COD Mobile": [
+        {name:"400 CP", price:5000},
+        {name:"800 CP", price:9500},
+        {name:"1,000 CP", price:12000},
+        {name:"2,000 CP", price:22000},
+        {name:"5,000 CP", price:50000},
+        {name:"10,000 CP", price:95000}
+    ],
+
+    "PUBG Mobile": [
+        {name:"60 UC", price:1500},
+        {name:"325 UC", price:5000},
+        {name:"660 UC", price:9000},
+        {name:"1,800 UC", price:22000},
+        {name:"3,850 UC", price:45000},
+        {name:"8,100 UC", price:90000}
+    ],
+
+    "Blood Strike": [
+        {name:"100 Gold", price:1500},
+        {name:"500 Gold", price:5000},
+        {name:"1,000 Gold", price:9000},
+        {name:"2,000 Gold", price:17000},
+        {name:"5,000 Gold", price:40000},
+        {name:"10,000 Gold", price:75000}
+    ]
+
+};
+
+
+var savedData = localStorage.getItem("topuphub_clean_games");
+
+var data;
+
+try {
+    data = savedData ? JSON.parse(savedData) : defaultData;
+
+    if (!data || typeof data !== "object") {
+        data = defaultData;
+    }
+
+} catch(error) {
+    data = defaultData;
+}
+
+
+var orders = [];
+
+try {
+
+    orders = JSON.parse(
+        localStorage.getItem("topuphub_clean_orders") || "[]"
+    );
+
+    if (!Array.isArray(orders)) {
+        orders = [];
+    }
+
+} catch(error) {
+    orders = [];
+}
+
+
+var selectedGame = "";
+var selectedPackage = null;
+var selectedAccount = null;
+var paymentImage = "";
+
+
+/*
+=================================================
+PAYMENT ACCOUNT ASSIGNMENT
+=================================================
+
+FREE FIRE:
+Kuda - Treasure Adams
+
+COD MOBILE:
+SmartCash - Ojo Joy
+
+PUBG MOBILE:
+SmartCash - Akunna Asogwa
+
+BLOOD STRIKE:
+SmartCash - Akunna Asogwa
+=================================================
+*/
+
+var gamePaymentAccounts = {
+
+    "Free Fire": {
+        bank: "Kuda",
+        name: "Treasure Adams",
+        number: "2085928303"
+    },
+
+    "COD Mobile": {
+        bank: "SmartCash",
+        name: "Ojo Joy",
+        number: "9115673592"
+    },
+
+    "PUBG Mobile": {
+        bank: "SmartCash",
+        name: "Akunna Asogwa",
+        number: "8120880011"
+    },
+
+    "Blood Strike": {
+        bank: "SmartCash",
+        name: "Akunna Asogwa",
+        number: "8120880011"
+    }
+
+};
+
+
+function money(amount) {
+    return "₦" + Number(amount).toLocaleString();
+}
+
+
+function saveData() {
+
+    localStorage.setItem(
+        "topuphub_clean_games",
+        JSON.stringify(data)
+    );
+
+}
+
+
+function renderGames() {
+
+    var box = document.getElementById("gamesList");
+
+    box.innerHTML = "";
+
+    Object.keys(data).forEach(function(game, index) {
+
+        var card = document.createElement("div");
+
+        card.className = "game-card";
+
+        if (index === 0 && selectedGame === "") {
+            selectedGame = game;
+        }
+
+        if (game === selectedGame) {
+            card.classList.add("active");
+        }
+
+        var name = document.createElement("div");
+
+        name.className = "game-name";
+
+        name.textContent = game;
+
+        card.appendChild(name);
+
+        card.onclick = function() {
+
+            selectedGame = game;
+
+            renderGames();
+
+            renderPackages();
+
+        };
+
+        box.appendChild(card);
+
+    });
+
+    renderPackages();
+
+}
+
+
+function renderPackages() {
+
+    var box = document.getElementById("packagesList");
+
+    box.innerHTML = "";
+
+    if (!selectedGame || !data[selectedGame]) {
+
+        box.textContent = "No packages available.";
+
+        return;
+
+    }
+
+    data[selectedGame].forEach(function(item) {
+
+        var card = document.createElement("div");
+
+        card.className = "package";
+
+
+        var image = document.createElement("div");
+
+        image.className = "package-image";
+
+        image.textContent = "Image not available";
+
+
+        var title = document.createElement("h3");
+
+        title.textContent = item.name;
+
+
+        var price = document.createElement("div");
+
+        price.className = "price";
+
+        price.textContent = money(item.price);
+
+
+        var button = document.createElement("button");
+
+        button.className = "buy-btn";
+
+        button.textContent = "Buy Now";
+
+
+        button.onclick = function() {
+
+            openCheckout(selectedGame, item);
+
+        };
+
+
+        card.appendChild(image);
+
+        card.appendChild(title);
+
+        card.appendChild(price);
+
+        card.appendChild(button);
+
+        box.appendChild(card);
+
+    });
+
+}
+
+
+function openCheckout(game, item) {
+
+    selectedGame = game;
+
+    selectedPackage = item;
+
+    selectedAccount = null;
+
+    paymentImage = "";
+
+    document.getElementById("checkoutModal").style.display = "block";
+
+    document.getElementById("checkoutStep1").classList.remove("hidden");
+
+    document.getElementById("checkoutStep2").classList.add("hidden");
+
+    document.getElementById("checkoutStep3").classList.add("hidden");
+
+    document.getElementById("checkoutSuccess").classList.add("hidden");
+
+    document.getElementById("stepBar").style.display = "flex";
+
+    document.getElementById("stepOneLabel").classList.add("active");
+
+    document.getElementById("stepTwoLabel").classList.remove("active");
+
+    document.getElementById("stepThreeLabel").classList.remove("active");
+
+    document.getElementById("paymentScreenshot").value = "";
+
+    document.getElementById("screenshotPreview").style.display = "none";
+
+}
+
+
+function closeCheckout() {
+
+    document.getElementById("checkoutModal").style.display = "none";
+
+}
+
+
+function goToPayment() {
+
+    var playerId =
+        document.getElementById("playerId").value.trim();
+
+    var username =
+        document.getElementById("playerUsername").value.trim();
+
+    var name =
+        document.getElementById("customerName").value.trim();
+
+    var phone =
+        document.getElementById("customerPhone").value.trim();
+
+
+    if (!playerId || !username || !name || !phone) {
+
+        alert("Please fill all player information.");
+
+        return;
+
+    }
+
+
+    document.getElementById("checkoutStep1")
+        .classList.add("hidden");
+
+    document.getElementById("checkoutStep2")
+        .classList.remove("hidden");
+
+
+    document.getElementById("stepOneLabel")
+        .classList.remove("active");
+
+    document.getElementById("stepTwoLabel")
+        .classList.add("active");
+
+
+    document.getElementById("paymentTitle").textContent =
+        "Pay " + money(selectedPackage.price) +
+        " for " + selectedGame + " - " +
+        selectedPackage.name;
+
+
+    renderAccount();
+
+}
+
+
+/*
+=================================================
+SHOW ONLY THE ACCOUNT FOR THE SELECTED GAME
+=================================================
+*/
+
+function renderAccount() {
+
+    var box =
+        document.getElementById("accountsList");
+
+    box.innerHTML = "";
+
+
+    var account =
+        gamePaymentAccounts[selectedGame];
+
+
+    if (!account) {
+
+        box.textContent =
+            "Payment account is currently unavailable.";
+
+        return;
+
+    }
+
+
+    var div =
+        document.createElement("div");
+
+    div.className = "account";
+
+
+    var header =
+        document.createElement("div");
+
+    header.className = "account-header";
+
+
+    var label =
+        document.createElement("div");
+
+    label.className = "account-label";
+
+    label.textContent =
+        "PAYMENT ACCOUNT";
+
+
+    var bank =
+        document.createElement("div");
+
+    bank.className = "account-bank";
+
+    bank.textContent =
+        account.bank;
+
+
+    header.appendChild(label);
+
+    header.appendChild(bank);
+
+
+    var number =
+        document.createElement("div");
+
+    number.className = "account-number";
+
+    number.textContent =
+        account.number;
+
+
+    var owner =
+        document.createElement("div");
+
+    owner.className = "account-owner";
+
+    owner.textContent =
+        "Account Name: " + account.name;
+
+
+    var note =
+        document.createElement("div");
+
+    note.className = "payment-note";
+
+    note.textContent =
+        "Transfer exactly " +
+        money(selectedPackage.price) +
+        " to this account, then continue to upload your payment screenshot.";
+
+
+    div.appendChild(header);
+
+    div.appendChild(number);
+
+    div.appendChild(owner);
+
+    div.appendChild(note);
+
+    box.appendChild(div);
+
+
+    selectedAccount = account;
+
+}
+
+
+function goToScreenshot() {
+
+    if (!selectedAccount) {
+
+        alert("Payment account is unavailable.");
+
+        return;
+
+    }
+
+
+    document.getElementById("checkoutStep2")
+        .classList.add("hidden");
+
+    document.getElementById("checkoutStep3")
+        .classList.remove("hidden");
+
+
+    document.getElementById("stepTwoLabel")
+        .classList.remove("active");
+
+    document.getElementById("stepThreeLabel")
+        .classList.add("active");
+
+}
+
+
+function previewScreenshot(event) {
+
+    var file =
+        event.target.files[0];
+
+    if (!file) return;
+
+
+    if (file.size > 3 * 1024 * 1024) {
+
+        alert(
+            "Screenshot is too large. Please choose an image below 3MB."
+        );
+
+        event.target.value = "";
+
+        return;
+
+    }
+
+
+    var reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e) {
+
+            paymentImage =
+                e.target.result;
+
+            var preview =
+                document.getElementById(
+                    "screenshotPreview"
+                );
+
+            preview.src =
+                paymentImage;
+
+            preview.style.display =
+                "block";
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function submitOrder() {
+
+    if (!paymentImage) {
+
+        alert(
+            "Please upload your payment screenshot."
+        );
+
+        return;
+
+    }
+
+
+    var orderId =
+        "TH" +
+        Date.now().toString().slice(-8) +
+        Math.floor(Math.random() * 90 + 10);
+
+
+    var order = {
+
+        id: orderId,
+
+        game: selectedGame,
+
+        package: selectedPackage.name,
+
+        price: selectedPackage.price,
+
+        playerId:
+            document.getElementById("playerId").value.trim(),
+
+        username:
+            document.getElementById("playerUsername").value.trim(),
+
+        customerName:
+            document.getElementById("customerName").value.trim(),
+
+        phone:
+            document.getElementById("customerPhone").value.trim(),
+
+        paymentBank:
+            selectedAccount.bank,
+
+        paymentName:
+            selectedAccount.name,
+
+        paymentNumber:
+            selectedAccount.number,
+
+        screenshot:
+            paymentImage,
+
+        status:
+            "Pending",
+
+        date:
+            new Date().toLocaleString()
+
+    };
+
+
+    orders.push(order);
+
+
+    localStorage.setItem(
+        "topuphub_clean_orders",
+        JSON.stringify(orders)
+    );
+
+
+    document.getElementById("checkoutStep3")
+        .classList.add("hidden");
+
+    document.getElementById("stepBar")
+        .style.display = "none";
+
+    document.getElementById("checkoutSuccess")
+        .classList.remove("hidden");
+
+    document.getElementById("finalOrderNumber")
+        .textContent = orderId;
+
+}
+
+
+function openAdminLogin() {
+
+    document.getElementById("adminLoginModal")
+        .style.display = "block";
+
+}
+
+
+function closeAdminLogin() {
+
+    document.getElementById("adminLoginModal")
+        .style.display = "none";
+
+}
+
+
+function loginAdmin() {
+
+    var password =
+        document.getElementById("adminPassword").value;
+
+
+    if (password !== "123456") {
+
+        alert("Incorrect admin password.");
+
+        return;
+
+    }
+
+
+    closeAdminLogin();
+
+    document.getElementById("customerPage")
+        .style.display = "none";
+
+    document.querySelector("footer")
+        .style.display = "none";
+
+    document.getElementById("adminPage")
+        .style.display = "block";
+
+
+    renderAdmin();
+
+}
+
+
+function logoutAdmin() {
+
+    document.getElementById("adminPage")
+        .style.display = "none";
+
+    document.getElementById("customerPage")
+        .style.display = "block";
+
+    document.querySelector("footer")
+        .style.display = "block";
+
+}
+
+
+function renderAdmin() {
+
+    renderOrders();
+
+    renderManagePackages();
+
+}
+
+
+function renderOrders() {
+
+    var box =
+        document.getElementById("ordersList");
+
+    box.innerHTML = "";
+
+
+    if (orders.length === 0) {
+
+        box.textContent =
+            "No orders yet.";
+
+        return;
+
+    }
+
+
+    orders.slice().reverse()
+    .forEach(function(order) {
+
+        var card =
+            document.createElement("div");
+
+        card.className =
+            "admin-card";
+
+
+        var title =
+            document.createElement("h3");
+
+        title.textContent =
+            order.game +
+            " - " +
+            order.package;
+
+
+        var info =
+            document.createElement("p");
+
+        info.style.color =
+            "#aeb8c7";
+
+        info.style.marginTop =
+            "8px";
+
+        info.textContent =
+            "Customer: " +
+            order.customerName +
+            " | Phone: " +
+            order.phone +
+            " | Player ID: " +
+            order.playerId;
+
+
+        var status =
+            document.createElement("div");
+
+        status.className =
+            "status";
+
+        status.textContent =
+            order.status;
+
+
+        var date =
+            document.createElement("p");
+
+        date.style.color =
+            "#7d8999";
+
+        date.style.fontSize =
+            "13px";
+
+        date.style.marginTop =
+            "5px";
+
+        date.textContent =
+            order.date;
+
+
+        var payment =
+            document.createElement("p");
+
+        payment.style.color =
+            "#aeb8c7";
+
+        payment.style.marginTop =
+            "8px";
+
+        payment.textContent =
+            "Paid to: " +
+            order.paymentBank +
+            " - " +
+            order.paymentName +
+            " (" +
+            order.paymentNumber +
+            ")";
+
+
+        var actions =
+            document.createElement("div");
+
+        actions.className =
+            "admin-actions";
+
+
+        var statusButton =
+            document.createElement("button");
+
+        statusButton.textContent =
+            order.status === "Pending"
+            ? "Mark Reviewing"
+            : order.status === "Reviewing"
+            ? "Mark Completed"
+            : "Mark Pending";
+
+
+        statusButton.onclick =
+            function() {
+
+                if (order.status === "Pending") {
+
+                    order.status =
+                        "Reviewing";
+
+                } else if (
+                    order.status === "Reviewing"
+                ) {
+
+                    order.status =
+                        "Completed";
+
+                } else {
+
+                    order.status =
+                        "Pending";
+
+                }
+
+
+                localStorage.setItem(
+                    "topuphub_clean_orders",
+                    JSON.stringify(orders)
+                );
+
+
+                renderOrders();
+
+            };
+
+
+        var screenshotButton =
+            document.createElement("button");
+
+        screenshotButton.textContent =
+            "View Screenshot";
+
+
+        screenshotButton.onclick =
+            function() {
+
+                var win =
+                    window.open();
+
+                if (!win) {
+
+                    alert(
+                        "Please allow popups to view the screenshot."
+                    );
+
+                    return;
+
+                }
+
+
+                win.document.write(
+                    "<title>Payment Screenshot</title>" +
+                    "<body style='background:#111;color:white;text-align:center;padding:20px'>" +
+                    "<h2>Payment Screenshot</h2>" +
+                    "<img src='" +
+                    order.screenshot +
+                    "' style='max-width:100%;max-height:90vh'>" +
+                    "</body>"
+                );
+
+            };
+
+
+        var deleteButton =
+            document.createElement("button");
+
+        deleteButton.textContent =
+            "Delete";
+
+
+        deleteButton.onclick =
+            function() {
+
+                deleteOrder(order.id);
+
+            };
+
+
+        actions.appendChild(statusButton);
+
+        actions.appendChild(screenshotButton);
+
+        actions.appendChild(deleteButton);
+
+
+        card.appendChild(title);
+
+        card.appendChild(info);
+
+        card.appendChild(status);
+
+        card.appendChild(date);
+
+        card.appendChild(payment);
+
+        card.appendChild(actions);
+
+        box.appendChild(card);
+
+    });
+
+}
+
+
+function deleteOrder(id) {
+
+    if (!confirm("Delete this order?")) {
+        return;
+    }
+
+
+    orders =
+        orders.filter(function(order) {
+
+            return order.id !== id;
+
+        });
+
+
+    localStorage.setItem(
+        "topuphub_clean_orders",
+        JSON.stringify(orders)
+    );
+
+
+    renderOrders();
+
+}
+
+
+function renderManagePackages() {
+
+    var box =
+        document.getElementById(
+            "managePackages"
+        );
+
+
+    box.innerHTML = "";
+
+
+    Object.keys(data).forEach(
+        function(game) {
+
+            var title =
+                document.createElement("h3");
+
+            title.textContent =
+                game;
+
+            title.style.marginTop =
+                "20px";
+
+            box.appendChild(title);
+
+
+            data[game].forEach(
+                function(item, index) {
+
+                    var row =
+                        document.createElement("div");
+
+                    row.className =
+                        "package-admin";
+
+
+                    var name =
+                        document.createElement("span");
+
+                    name.textContent =
+                        item.name;
+
+
+                    var price =
+                        document.createElement("span");
+
+                    price.textContent =
+                        money(item.price);
+
+
+                    var deleteBtn =
+                        document.createElement("button");
+
+                    deleteBtn.textContent =
+                        "Delete";
+
+
+                    deleteBtn.onclick =
+                        function() {
+
+                            if (
+                                !confirm(
+                                    "Delete " +
+                                    item.name +
+                                    "?"
+                                )
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            data[game].splice(
+                                index,
+                                1
+                            );
+
+
+                            saveData();
+
+                            renderManagePackages();
+
+                            renderGames();
+
+                        };
+
+
+                    row.appendChild(name);
+
+                    row.appendChild(price);
+
+                    row.appendChild(deleteBtn);
+
+                    box.appendChild(row);
+
+                }
+            );
+
+
+            var addBtn =
+                document.createElement("button");
+
+            addBtn.className =
+                "add-package";
+
+            addBtn.textContent =
+                "Add Package to " +
+                game;
+
+
+            addBtn.onclick =
+                function() {
+
+                    var packageName =
+                        prompt(
+                            "Enter package name:"
+                        );
+
+
+                    if (!packageName) {
+                        return;
+                    }
+
+
+                    var packagePrice =
+                        prompt(
+                            "Enter package price:"
+                        );
+
+
+                    if (!packagePrice) {
+                        return;
+                    }
+
+
+                    var numericPrice =
+                        Number(
+                            packagePrice.replace(
+                                /,/g,
+                                ""
+                            )
+                        );
+
+
+                    if (
+                        isNaN(numericPrice) ||
+                        numericPrice <= 0
+                    ) {
+
+                        alert(
+                            "Enter a valid price."
+                        );
+
+                        return;
+
+                    }
+
+
+                    data[game].push({
+
+                        name:
+                            packageName,
+
+                        price:
+                            numericPrice
+
+                    });
+
+
+                    saveData();
+
+                    renderManagePackages();
+
+                    renderGames();
+
+                };
+
+
+            box.appendChild(addBtn);
+
+        }
+    );
+
+}
+
+
+renderGames();
+
+</script>
+
+</body>
+</html>
